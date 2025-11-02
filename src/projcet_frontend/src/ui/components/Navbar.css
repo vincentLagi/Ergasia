@@ -1,0 +1,104 @@
+/* Special AI Chat Button Styles - Now using default primary styling */
+
+/* Shimmer Animation */
+.ai-chat-shimmer {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: shimmer 3s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Pulse Animation for Box Shadow */
+.ai-chat-pulse {
+  animation: pulse-shadow 2s infinite ease-in-out;
+}
+
+@keyframes pulse-shadow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+  }
+}
+
+/* Robot Icon Rotation */
+.ai-robot-icon {
+  animation: rotate-slow 8s infinite linear;
+}
+
+@keyframes rotate-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Sparkle Animation */
+.ai-sparkle {
+  animation: sparkle 2s infinite ease-in-out;
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* Mobile AI Button - Now using default primary styling */
+
+/* Theme-specific adjustments */
+[data-theme="dark"] .ai-chat-button {
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.2);
+}
+
+[data-theme="dark"] .ai-chat-button:hover {
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+}
+
+[data-theme="light"] .ai-chat-button {
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.15);
+}
+
+[data-theme="light"] .ai-chat-button:hover {
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.25);
+}
+
+/* Focus states for accessibility */
+.ai-chat-button:focus-visible {
+  outline: 2px solid #a855f7;
+  outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .ai-chat-shimmer,
+  .ai-robot-icon,
+  .ai-sparkle,
+  .ai-chat-pulse {
+    animation: none;
+  }
+  
+  .ai-chat-button {
+    transition: none;
+  }
+}

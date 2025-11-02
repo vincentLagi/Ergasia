@@ -1,0 +1,14 @@
+{
+    "test-ICP-agent": {
+        "identity_key": "259cac6344c538911bc31c1d4751e3cfc5a2be6899e5755aaea5168ea00810b4",
+        "wallet_key": "r0NoJMxf+lEtUAi80nWKtB+lKefFMqFvbG4OH20GA9s="
+    },
+    "freelancer-assistant": {
+        "identity_key": "6d6208ae41dc27722a01808e02179d081251239cc971c8b429f0c5bc3882cd17",
+        "wallet_key": "w65ETrhg8eXiqf8jtZSST1ZCFlsaYLfw6W3weVK7VPU="
+    },
+    "advisor-agent": {
+        "identity_key": "bf487bf04486d83a9e63024f1c9dcfa1087b8ff954f50feac2861654b8654597",
+        "wallet_key": "renHKMG4TjObCO4mu2VWZPdLt2VLahq2L4tJhu47zDg="
+    }
+}

@@ -1,0 +1,95 @@
+@import "tailwindcss";
+/* This is where we define the actual color values for our themes.
+  We'll use HSL (Hue, Saturation, Lightness) values as they are easier 
+  to manipulate and understand for theming.
+*/
+
+@layer base {
+  /* Light Theme (default) - Modern Elegant Colors */
+  :root {
+    --background: 0 0% 100%; /* Pure White */
+    --foreground: 222 84% 4.9%; /* Rich Dark Blue-Gray */
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 84% 4.9%;
+
+    --primary: 238 75% 65%; /* Modern Indigo */
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 220 14.3% 95.9%; /* Cool Light Gray */
+    --secondary-foreground: 220 8.9% 46.1%;
+
+    --muted: 220 14.3% 95.9%;
+    --muted-foreground: 220 8.9% 46.1%;
+
+    --accent: 220 14.3% 95.9%;
+    --accent-foreground: 220 8.9% 46.1%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 238 75% 65%; /* Modern Indigo for focus */
+
+    --radius: 0.75rem;
+  }
+
+  /* Dark Theme - Modern Elegant Dark Colors */
+  [data-theme="dark"],
+  .dark {
+    --background: 222 84% 4.9%; /* Rich Dark Blue-Gray */
+    --foreground: 210 40% 98%; /* Soft White */
+
+    --card: 222 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 238 75% 65%; /* Modern Indigo - same as light for consistency */
+    --primary-foreground: 222 84% 4.9%;
+
+    --secondary: 217 32.6% 17.5%; /* Sophisticated Dark Blue-Gray */
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 32.6% 17.5%;
+    --input: 217 32.6% 17.5%;
+    --ring: 238 75% 65%; /* Modern Indigo for focus */
+    --text: 0 0% 100%;
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  }
+  
+  /* Smooth transitions for theme changes */
+  *,
+  *::before,
+  *::after {
+    transition: background-color 0.2s ease-in-out,
+                border-color 0.2s ease-in-out,
+                color 0.2s ease-in-out,
+                box-shadow 0.2s ease-in-out;
+  }
+}

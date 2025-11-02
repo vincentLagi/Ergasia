@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Connection Tester</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 16px;
+      margin-bottom: 16px;
+      background-color: #f8f9fa;
+    }
+    .endpoint {
+      margin-bottom: 20px;
+    }
+    h2 {
+      margin-top: 0;
+      color: #333;
+    }
+    button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    pre {
+      background-color: #f1f1f1;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    .success { color: green; }
+    .error { color: red; }
+  </style>
+</head>
+<body>
+  <h1>API Connection Tester</h1>
+  <p>Use this tool to test connections to your API endpoints, especially after fixing HTTP/HTTPS issues.</p>
+  
+  <div class="card">
+    <h2>Environment</h2>
+    <div id="environment-info">Loading...</div>
+  </div>
+
+  <div class="endpoint card">
+    <h2>Advisor API Test</h2>
+  <p>Test connection to: <code id="advisor-url">https://advisor.130.211.124.157.sslip.io/api/chat</code></p>
+    <div style="margin: 8px 0;">
+      <label><input type="radio" name="advisor-mode" value="auto" checked> Auto</label>
+      <label style="margin-left: 12px;"><input type="radio" name="advisor-mode" value="https"> HTTPS</label>
+      <label style="margin-left: 12px;"><input type="radio" name="advisor-mode" value="proxy"> Dev Proxy</label>
+    </div>
+    <div>
+      <button onclick="testAdvisorAPI()">Test Connection</button>
+      <span id="advisor-status"></span>
+    </div>
+    <pre id="advisor-response"></pre>
+  </div>
+
+  <div class="endpoint card">
+    <h2>Face Recognition API Test</h2>
+  <p>Test connection to: <code id="face-recognition-url">https://face.130.211.124.157.sslip.io/check-registration/test</code></p>
+    <div style="margin: 8px 0;">
+      <label><input type="radio" name="face-mode" value="auto" checked> Auto</label>
+      <label style="margin-left: 12px;"><input type="radio" name="face-mode" value="https"> HTTPS</label>
+      <label style="margin-left: 12px;"><input type="radio" name="face-mode" value="proxy"> Dev Proxy</label>
+    </div>
+    <div>
+      <button onclick="testFaceRecognitionAPI()">Test Connection</button>
+      <span id="face-recognition-status"></span>
+    </div>
+    <pre id="face-recognition-response"></pre>
+  </div>
+
+  <script>
+    // Display environment info
+    function showEnvironmentInfo() {
+      const envInfo = document.getElementById('environment-info');
+      envInfo.innerHTML = `
+        <ul>
+          <li><strong>Protocol:</strong> ${window.location.protocol}</li>
+          <li><strong>Host:</strong> ${window.location.host}</li>
+          <li><strong>Origin:</strong> ${window.location.origin}</li>
+          <li><strong>User Agent:</strong> ${navigator.userAgent}</li>
+        </ul>
+      `;
+    }
+    
+    function getSelected(name) {
+      const els = document.querySelectorAll(`input[name="${name}"]`);
+      for (const el of els) if (el.checked) return el.value;
+      return 'auto';
+    }
+
+    function fetchWithTimeout(resource, options = {}) {
+      const { timeout = 10000, ...rest } = options;
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), timeout);
+      return fetch(resource, { ...rest, signal: controller.signal })
+        .finally(() => clearTimeout(id));
+    }
+
+    // Test Advisor API
+    async function testAdvisorAPI() {
+      const statusEl = document.getElementById('advisor-status');
+      const responseEl = document.getElementById('advisor-response');
+      statusEl.innerHTML = 'Testing...';
+      statusEl.className = '';
+      
+      try {
+        const urlEl = document.getElementById('advisor-url');
+        const mode = getSelected('advisor-mode');
+        let url = urlEl.textContent.trim();
+        if (mode === 'proxy' || (mode === 'auto' && window.location.protocol === 'http:')) {
+          url = '/advisor-api/api/chat';
+        } else if (mode === 'https') {
+          // keep as is
+        } // auto + https keeps as is
+        const started = performance.now();
+        
+        const response = await fetchWithTimeout(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            message: "Hello, testing connection",
+            userId: "test-user-id"
+          }),
+          mode: 'cors',
+          timeout: 10000
+        });
+        
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`HTTP ${response.status}: ${errorText}`);
+        }
+        
+        const data = await response.json();
+        const ms = Math.round(performance.now() - started);
+        responseEl.textContent = JSON.stringify({ url, latency_ms: ms, data }, null, 2);
+        statusEl.innerHTML = '✅ Success';
+        statusEl.className = 'success';
+        
+      } catch (error) {
+        console.error('Error testing Advisor API:', error);
+        responseEl.textContent = `Error: ${error.name || 'Error'} - ${error.message}`;
+        statusEl.innerHTML = '❌ Failed';
+        statusEl.className = 'error';
+      }
+    }
+
+    // Test Face Recognition API
+    async function testFaceRecognitionAPI() {
+      const statusEl = document.getElementById('face-recognition-status');
+      const responseEl = document.getElementById('face-recognition-response');
+      statusEl.innerHTML = 'Testing...';
+      statusEl.className = '';
+      
+      try {
+        const urlEl = document.getElementById('face-recognition-url');
+        const mode = getSelected('face-mode');
+        let url = urlEl.textContent.trim();
+        if (mode === 'proxy' || (mode === 'auto' && window.location.protocol === 'http:')) {
+          url = '/face-api/check-registration/test';
+        }
+        const started = performance.now();
+        const response = await fetchWithTimeout(url, { timeout: 10000 });
+        
+        let data;
+        try {
+          data = await response.json();
+        } catch (e) {
+          data = { text: await response.text() };
+        }
+        
+        const ms = Math.round(performance.now() - started);
+        responseEl.textContent = JSON.stringify({ url, latency_ms: ms, data }, null, 2);
+        
+        if (response.ok) {
+          statusEl.innerHTML = '✅ Success';
+          statusEl.className = 'success';
+        } else {
+          statusEl.innerHTML = `❌ Failed (${response.status})`;
+          statusEl.className = 'error';
+        }
+        
+      } catch (error) {
+        console.error('Error testing Face Recognition API:', error);
+        responseEl.textContent = `Error: ${error.name || 'Error'} - ${error.message}`;
+        statusEl.innerHTML = '❌ Failed';
+        statusEl.className = 'error';
+      }
+    }
+
+    // Initialize
+    showEnvironmentInfo();
+  </script>
+</body>
+</html>

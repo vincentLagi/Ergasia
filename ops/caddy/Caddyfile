@@ -1,0 +1,19 @@
+# Caddy reverse proxy with automatic HTTPS using sslip.io hostnames
+# Replace the IP below if your server IP changes.
+
+{
+	# Optional: receive ACME notifications
+	# email you@example.com
+}
+
+advisor.130.211.124.157.sslip.io {
+	encode zstd gzip
+	# Rely on backend (Uvicorn/FastAPI) to set CORS headers to avoid duplicates
+	reverse_proxy 127.0.0.1:8002
+}
+
+face.130.211.124.157.sslip.io {
+	encode zstd gzip
+	# Rely on backend (Uvicorn/FastAPI) to set CORS headers to avoid duplicates
+	reverse_proxy 127.0.0.1:8000
+}

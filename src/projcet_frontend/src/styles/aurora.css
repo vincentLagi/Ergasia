@@ -1,0 +1,35 @@
+/* aurora.css */
+:root {
+  --aurora-color-1: 158deg 100% 50%;
+  --aurora-color-2: 240deg 100% 50%;
+  --aurora-color-3: 320deg 100% 50%;
+  --aurora-color-4: 40deg 100% 50%;
+}
+
+@keyframes aurora-gradient {
+  0%, 100% {
+    background-size: 200% 200%;
+    background-position: left top;
+  }
+  50% {
+    background-size: 200% 200%;
+    background-position: right bottom;
+  }
+}
+
+@keyframes aurora-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-aurora-gradient {
+  animation: aurora-gradient 8s ease infinite;
+}
+
+.animate-aurora-spin {
+  animation: aurora-spin 8s linear infinite;
+}

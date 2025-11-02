@@ -1,0 +1,42 @@
+{
+  "canisters": {
+    "internet_identity": {
+      "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
+      "frontend": {},
+      "remote": {
+        "id": {
+          "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
+        }
+      },
+      "type": "custom",
+      "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz"
+    },
+    "projcet_backend_single": {
+      "main": "src/projcet_backend_single/main.mo",
+      "type": "motoko"
+    },
+    "icrc1_ledger_canister": {
+      "type": "custom",
+      "candid": "https://raw.githubusercontent.com/dfinity/ic/047925dfd8386aca91d154054149727131766084/rs/ledger_suite/icrc1/ledger/ledger.did",
+      "wasm": "https://download.dfinity.systems/ic/047925dfd8386aca91d154054149727131766084/canisters/ic-icrc1-ledger.wasm.gz"
+    },
+    "projcet_frontend": {
+      "dependencies": [
+        "projcet_backend_single"
+      ],
+      "source": [
+        "src/projcet_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "projcet_frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
